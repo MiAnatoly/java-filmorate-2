@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.filmvalidator.ValidateData;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class Film {
     @Positive(message = "Идентификатор фильма отрицательный.")
     @Max(value = Integer.MAX_VALUE, message = "Превышено максимальное значение id" + Integer.MAX_VALUE + ".")
