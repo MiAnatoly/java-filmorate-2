@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserRepository usersManager = ManagerProvider.getDefaultUserManager();
+
     // добавление пользователя
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {

@@ -27,8 +27,7 @@ public class InMemoryUserRepository implements UserRepository {
             newUser.setName(newUser.getLogin());
         }
 
-        if (!users.containsKey(newUser.getId()))
-        {
+        if (!users.containsKey(newUser.getId())) {
             users.put(newUser.getId(), newUser);
             return newUser;
         } else {
