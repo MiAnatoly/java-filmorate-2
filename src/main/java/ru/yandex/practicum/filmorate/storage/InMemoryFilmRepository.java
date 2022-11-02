@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import ru.yandex.practicum.filmorate.exception.ValidationExceptions;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class InMemoryFilmRepository implements FilmRepository {
             films.put(film.getId(), film);
             return film;
         } else {
-            throw new ValidationExceptions("Фильм "
+            throw new ValidationException("Фильм "
                     + film.getName()
                     + " с id="
                     + film.getId()
@@ -40,7 +40,7 @@ public class InMemoryFilmRepository implements FilmRepository {
             films.put(filmToUpdate.getId(), filmToUpdate);
             return filmToUpdate;
         } else {
-            throw new ValidationExceptions("Фильм "
+            throw new ValidationException("Фильм "
                     + filmToUpdate.getName()
                     + " с id="
                     + filmToUpdate.getId()

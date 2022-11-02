@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import ru.yandex.practicum.filmorate.exception.ValidationExceptions;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class InMemoryUserRepository implements UserRepository {
             users.put(newUser.getId(), newUser);
             return newUser;
         } else {
-            throw new ValidationExceptions("Пользователь "
+            throw new ValidationException("Пользователь "
                     + newUser.getName()
                     + " с id="
                     + newUser.getId()
@@ -44,7 +44,7 @@ public class InMemoryUserRepository implements UserRepository {
             users.put(userToUpdate.getId(), userToUpdate);
             return userToUpdate;
         } else {
-            throw new ValidationExceptions("Пользователь "
+            throw new ValidationException("Пользователь "
                     + userToUpdate.getName()
                     + " с id="
                     + userToUpdate.getId()
