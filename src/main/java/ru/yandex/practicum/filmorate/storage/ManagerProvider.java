@@ -4,11 +4,11 @@ public class ManagerProvider {
     private ManagerProvider() {
     }
 
-    public static InMemoryFilmRepository getDefaultFilmsManager() {
+    public static FilmRepository getDefaultFilmsManager() {
         return new InMemoryFilmRepository();
     }
 
-    public static InMemoryUserRepository getDefaultUserManager() {
+    public static UserRepository getDefaultUserManager() {
         return new InMemoryUserRepository();
     }
 }

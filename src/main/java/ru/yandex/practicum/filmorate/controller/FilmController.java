@@ -2,9 +2,9 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.storage.ManagerProvider;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmRepository;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.FilmRepository;
+import ru.yandex.practicum.filmorate.storage.ManagerProvider;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final InMemoryFilmRepository filmsManager = ManagerProvider.getDefaultFilmsManager();
+    private final FilmRepository filmsManager = ManagerProvider.getDefaultFilmsManager();
 
     // добавление фильма
     @PostMapping
