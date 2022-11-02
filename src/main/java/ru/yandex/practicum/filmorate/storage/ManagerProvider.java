@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.inMemoryStorage;
+package ru.yandex.practicum.filmorate.storage;
 
 public class ManagerProvider {
     private ManagerProvider() {
