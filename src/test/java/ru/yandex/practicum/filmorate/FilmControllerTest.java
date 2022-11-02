@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class FilmControllerTest {
-
     private Film film;
     @Autowired
     private FilmController filmController;
@@ -56,6 +55,13 @@ public class FilmControllerTest {
                 .build();
         filmController.addFilm(film);
 
+        film = Film.builder()
+                .id(1)
+                .name("Updated film")
+                .description("description 123")
+                .releaseDate(LocalDate.of(1969, 3, 25))
+                .duration(85)
+                .build();
         filmController.updateFilm(film);
 
         assertThat(filmController.getFilms()).containsExactly(film);
