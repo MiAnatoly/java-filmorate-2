@@ -84,7 +84,7 @@ public class FilmRepositoryTest {
                 .duration(100)
                 .build();
 
-        assertEquals(film, filmRepository.updateFilm(film));
+        assertEquals(filmRepository.updateFilm(film), film);
     }
 
     @Test
