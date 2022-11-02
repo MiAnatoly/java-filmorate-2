@@ -30,7 +30,7 @@ public class InMemoryFilmRepository implements FilmRepository {
                     + film.getName()
                     + " с id="
                     + film.getId()
-                    + "уже существует");
+                    + " уже существует.");
         }
     }
 
