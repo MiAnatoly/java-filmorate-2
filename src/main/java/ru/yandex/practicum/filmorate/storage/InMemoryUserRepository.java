@@ -57,14 +57,14 @@ public class InMemoryUserRepository implements UserRepository {
         return new ArrayList<>(users.values());
     }
 
+    @Override
+    public void clear() {
+        users.clear();
+    }
+
     private void checkUserName(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
-    }
-
-    @Override
-    public void clear() {
-        users.clear();
     }
 }
