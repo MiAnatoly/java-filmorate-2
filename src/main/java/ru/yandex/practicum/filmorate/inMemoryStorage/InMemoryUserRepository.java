@@ -42,6 +42,10 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public User updateUser(User userToUpdate) {
         if (users.containsKey(userToUpdate.getId())) {
+            if (userToUpdate.getName() == null || userToUpdate.getName().isBlank()) {
+                userToUpdate.setName(userToUpdate.getLogin());
+            }
+
             users.put(userToUpdate.getId(), userToUpdate);
             return userToUpdate;
         } else {
