@@ -171,6 +171,6 @@ public class FilmRepositoryTest {
         filmRepository.addFilm(film);
 
         filmRepository.clear();
-        assertEquals(new ArrayList<>(), filmRepository.getAllFilms());
+        assertEquals(new ArrayList<Film>(), filmRepository.getAllFilms());
     }
 }
