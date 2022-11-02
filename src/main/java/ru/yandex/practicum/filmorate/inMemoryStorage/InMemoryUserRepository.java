@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.inMemoryStorage;
 
-import ru.yandex.practicum.filmorate.exceprions.ValidationExceptions;
+import ru.yandex.practicum.filmorate.exceprion.ValidationExceptions;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.ArrayList;
