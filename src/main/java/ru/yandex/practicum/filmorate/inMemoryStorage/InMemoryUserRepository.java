@@ -20,8 +20,7 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public User addUser(User newUser) {
         if (newUser.getId() == null) {
-            updateId();
-            newUser.setId(id);
+            newUser.setId(++id);
         }
 
         if (newUser.getName() == null || newUser.getName().isBlank()) {
@@ -58,10 +57,5 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
-    }
-
-    @Override
-    public void updateId() {
-        ++id;
     }
 }

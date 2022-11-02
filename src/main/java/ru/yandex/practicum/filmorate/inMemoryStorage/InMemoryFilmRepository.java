@@ -20,8 +20,7 @@ public class InMemoryFilmRepository implements FilmRepository {
     @Override
     public Film addFilm(Film film) {
         if (film.getId() == null) {
-            updateId();
-            film.setId(id);
+            film.setId(++id);
         }
         if (!films.containsKey(film.getId())) {
             films.put(film.getId(), film);
@@ -52,10 +51,5 @@ public class InMemoryFilmRepository implements FilmRepository {
     @Override
     public List<Film> getAllFilms() {
         return new ArrayList<>(films.values());
-    }
-
-    @Override
-    public void updateId() {
-        ++id;
     }
 }
