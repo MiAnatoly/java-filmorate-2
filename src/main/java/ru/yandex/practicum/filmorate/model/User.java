@@ -17,8 +17,8 @@ public class User {
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Не корректный e-mail.")
     private String email; // адрес электронной почты
 
-
-    @Pattern(regexp = "^(?!\\s*$).+", message = "Некорректный логин пользователя.")
+    @NotBlank(message = "Поле login пустое.")
+    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9-_.]{1,20}$", message = "Некорректный логин пользователя.")
     private String login; // логин пользователя
 
     private String name; // имя пользователя
