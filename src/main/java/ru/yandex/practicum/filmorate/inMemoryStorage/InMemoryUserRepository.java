@@ -23,9 +23,7 @@ public class InMemoryUserRepository implements UserRepository {
             newUser.setId(++id);
         }
 
-        if (newUser.getName() == null || newUser.getName().isBlank()) {
-            newUser.setName(newUser.getLogin());
-        }
+        checkUserName(newUser);
 
         if (!users.containsKey(newUser.getId())) {
             users.put(newUser.getId(), newUser);
@@ -42,10 +40,7 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public User updateUser(User userToUpdate) {
         if (users.containsKey(userToUpdate.getId())) {
-            if (userToUpdate.getName() == null || userToUpdate.getName().isBlank()) {
-                userToUpdate.setName(userToUpdate.getLogin());
-            }
-
+            checkUserName(userToUpdate);
             users.put(userToUpdate.getId(), userToUpdate);
             return userToUpdate;
         } else {
@@ -60,5 +55,11 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
+    }
+
+    private void checkUserName(User user) {
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
     }
 }
