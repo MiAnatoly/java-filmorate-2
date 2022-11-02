@@ -52,4 +52,9 @@ public class InMemoryFilmRepository implements FilmRepository {
     public List<Film> getAllFilms() {
         return new ArrayList<>(films.values());
     }
+
+    @Override
+    public void clear() {
+        films.clear();
+    }
 }

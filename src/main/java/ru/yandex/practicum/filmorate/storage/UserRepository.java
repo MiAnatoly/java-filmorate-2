@@ -10,4 +10,6 @@ public interface UserRepository {
     User updateUser(User userToUpdate);
 
     List<User> getAllUsers();
+
+    void clear();
 }

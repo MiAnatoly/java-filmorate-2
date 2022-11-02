@@ -10,4 +10,6 @@ public interface FilmRepository {
     Film updateFilm(Film filmToUpdate);
 
     List<Film> getAllFilms();
+
+    void clear();
 }

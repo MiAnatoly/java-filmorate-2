@@ -62,4 +62,9 @@ public class InMemoryUserRepository implements UserRepository {
             user.setName(user.getLogin());
         }
     }
+
+    @Override
+    public void clear() {
+        users.clear();
+    }
 }
