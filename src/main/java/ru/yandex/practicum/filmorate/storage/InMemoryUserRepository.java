@@ -33,7 +33,7 @@ public class InMemoryUserRepository implements UserRepository {
                     + newUser.getName()
                     + " с id="
                     + newUser.getId()
-                    + "уже существует");
+                    + " уже существует");
         }
     }
 
