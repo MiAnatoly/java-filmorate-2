@@ -4,7 +4,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
 
-public interface InMemoryUsers {
+public interface UserRepository {
     User addUser(User newUser);
 
     User updateUser(User userToUpdate);

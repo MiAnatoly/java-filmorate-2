@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.inMemoryStorage.InMemoryUsers;
+import ru.yandex.practicum.filmorate.inMemoryStorage.UserRepository;
 import ru.yandex.practicum.filmorate.inMemoryStorage.ManagerProvider;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final InMemoryUsers usersManager = ManagerProvider.getDefaultUserManager();
+    private final UserRepository usersManager = ManagerProvider.getDefaultUserManager();
     // добавление пользователя
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
