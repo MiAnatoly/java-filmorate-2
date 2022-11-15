@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryFilmRepository implements FilmRepository {
+public class InMemoryFilmStorage implements FilmRepository {
     private final Map<Integer, Film> films;
     private Integer id;
 
-    public InMemoryFilmRepository() {
+    public InMemoryFilmStorage() {
         this.films = new HashMap<>();
         this.id = 0;
     }

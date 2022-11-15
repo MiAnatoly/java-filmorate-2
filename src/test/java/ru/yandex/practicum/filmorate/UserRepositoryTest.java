@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserRepository;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserRepository;
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        userRepository = new InMemoryUserRepository();
+        userRepository = new InMemoryUserStorage();
     }
 
     @Test

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmRepository;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmRepository;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class FilmRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        filmRepository = new InMemoryFilmRepository();
+        filmRepository = new InMemoryFilmStorage();
     }
 
     @Test

@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryUserRepository implements UserRepository {
+public class InMemoryUserStorage implements UserRepository {
     private final Map<Integer, User> users;
     private Integer id;
 
-    public InMemoryUserRepository() {
+    public InMemoryUserStorage() {
         this.users = new HashMap<>();
         this.id = 0;
     }

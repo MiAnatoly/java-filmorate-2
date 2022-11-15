@@ -5,10 +5,10 @@ public class ManagerProvider {
     }
 
     public static FilmRepository getDefaultFilmsManager() {
-        return new InMemoryFilmRepository();
+        return new InMemoryFilmStorage();
     }
 
     public static UserRepository getDefaultUserManager() {
-        return new InMemoryUserRepository();
+        return new InMemoryUserStorage();
     }
 }
