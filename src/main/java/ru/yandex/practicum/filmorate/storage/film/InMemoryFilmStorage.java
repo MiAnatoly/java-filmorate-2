@@ -60,7 +60,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.containsKey(filmId)) {
             return films.get(filmId);
         } else {
-            throw new SearchedObjectNotFoundException("Фильм "
+            throw new SearchedObjectNotFoundException("Фильм"
                     + " с filmId="
                     + filmId
                     + " не найден");
@@ -72,11 +72,11 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.containsKey(filmId) && userId > 0) {
             films.get(filmId).getLike().add(userId);
         } else {
-            throw new SearchedObjectNotFoundException("Фильм "
+            throw new SearchedObjectNotFoundException("Фильм"
                     + " с filmId="
                     + filmId
                     + " не найден"
-                    + " или пользователь с userId"
+                    + " или пользователь с userId="
                     + userId);
         }
     }
@@ -86,11 +86,11 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.containsKey(filmId) && userId > 0) {
             films.get(filmId).getLike().remove(userId);
         } else {
-            throw new SearchedObjectNotFoundException("Фильм "
+            throw new SearchedObjectNotFoundException("Фильм"
                     + " с filmId="
                     + filmId
                     + " не найден"
-                    + " или пользователь с userId"
+                    + " или пользователь с userId="
                     + userId);
         }
     }

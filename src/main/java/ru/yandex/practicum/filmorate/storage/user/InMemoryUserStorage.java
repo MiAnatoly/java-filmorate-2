@@ -79,7 +79,7 @@ public class InMemoryUserStorage implements UserStorage {
             user.getFriends().add(friendId);
             friend.getFriends().add(userId);
         } else {
-            throw new SearchedObjectNotFoundException("Пользователь "
+            throw new SearchedObjectNotFoundException("Пользователь"
                     + " с id="
                     + userId
                     + " или друг с id="
@@ -96,7 +96,7 @@ public class InMemoryUserStorage implements UserStorage {
             user.getFriends().remove(friend.getId());
             friend.getFriends().remove(user.getId());
         } else {
-            throw new SearchedObjectNotFoundException("Пользователь "
+            throw new SearchedObjectNotFoundException("Пользователь"
                     + " с id="
                     + userId
                     + " или друг с id="
@@ -118,7 +118,7 @@ public class InMemoryUserStorage implements UserStorage {
                     .map(users::get)
                     .collect(Collectors.toList());
         } else {
-            throw new InternalServerErrorException("Пользователь "
+            throw new InternalServerErrorException("Пользователь"
                     + " с id="
                     + userId
                     + " или друг с id="
@@ -136,7 +136,7 @@ public class InMemoryUserStorage implements UserStorage {
                     .map(users::get)
                     .collect(Collectors.toList());
         } else {
-            throw new SearchedObjectNotFoundException("Пользователь "
+            throw new SearchedObjectNotFoundException("Пользователь"
                     + " с id="
                     + userId
                     + " не найден");
