@@ -2,10 +2,10 @@ package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.exception.SearchedObjectNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.FilmRepository;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,13 +13,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FilmRepositoryTest {
-    private FilmRepository filmRepository;
+class FilmStorageTest {
+    private InMemoryFilmStorage filmStorage;
     private Film film;
 
     @BeforeEach
     void setUp() {
-        filmRepository = new InMemoryFilmStorage();
+        filmStorage = new InMemoryFilmStorage();
     }
 
     @Test
@@ -30,7 +30,7 @@ public class FilmRepositoryTest {
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(100)
                 .build();
-        filmRepository.addFilm(film);
+        filmStorage.addFilm(film);
 
         List<Film> films = new ArrayList<>();
         film = Film.builder()
@@ -42,7 +42,7 @@ public class FilmRepositoryTest {
                 .build();
         films.add(film);
 
-        assertEquals(films, filmRepository.getAllFilms());
+        assertEquals(films, filmStorage.getAllFilms());
     }
 
     @Test
@@ -57,8 +57,8 @@ public class FilmRepositoryTest {
 
         ValidationException validationException = assertThrows(ValidationException.class,
                 () -> {
-                    filmRepository.addFilm(film);
-                    filmRepository.addFilm(film);
+                    filmStorage.addFilm(film);
+                    filmStorage.addFilm(film);
                 });
 
         String message = validationException.getMessage();
@@ -74,7 +74,7 @@ public class FilmRepositoryTest {
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(100)
                 .build();
-        filmRepository.addFilm(film);
+        filmStorage.addFilm(film);
 
         film = Film.builder()
                 .id(1)
@@ -84,7 +84,7 @@ public class FilmRepositoryTest {
                 .duration(100)
                 .build();
 
-        assertEquals(filmRepository.updateFilm(film), film);
+        assertEquals(filmStorage.updateFilm(film), film);
     }
 
     @Test
@@ -97,10 +97,11 @@ public class FilmRepositoryTest {
                 .duration(100)
                 .build();
 
-        ValidationException validationException = assertThrows(ValidationException.class,
-                () -> filmRepository.updateFilm(film));
+        SearchedObjectNotFoundException searchedObjectNotFoundException = assertThrows(
+                SearchedObjectNotFoundException.class,
+                () -> filmStorage.updateFilm(film));
 
-        String message = validationException.getMessage();
+        String message = searchedObjectNotFoundException.getMessage();
         assertTrue(message.contains("Фильм Updated film с id=9999 не найден"));
     }
 
@@ -116,7 +117,7 @@ public class FilmRepositoryTest {
                 .duration(100)
                 .build();
         films.add(film);
-        filmRepository.addFilm(film);
+        filmStorage.addFilm(film);
 
         film = Film.builder()
                 .id(2)
@@ -126,7 +127,7 @@ public class FilmRepositoryTest {
                 .duration(100)
                 .build();
         films.add(film);
-        filmRepository.addFilm(film);
+        filmStorage.addFilm(film);
 
         film = Film.builder()
                 .id(3)
@@ -136,9 +137,9 @@ public class FilmRepositoryTest {
                 .duration(100)
                 .build();
         films.add(film);
-        filmRepository.addFilm(film);
+        filmStorage.addFilm(film);
 
-        assertEquals(filmRepository.getAllFilms(), films);
+        assertEquals(filmStorage.getAllFilms(), films);
     }
 
     @Test
@@ -150,7 +151,7 @@ public class FilmRepositoryTest {
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(100)
                 .build();
-        filmRepository.addFilm(film);
+        filmStorage.addFilm(film);
 
         film = Film.builder()
                 .id(2)
@@ -159,7 +160,7 @@ public class FilmRepositoryTest {
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(100)
                 .build();
-        filmRepository.addFilm(film);
+        filmStorage.addFilm(film);
 
         film = Film.builder()
                 .id(3)
@@ -168,9 +169,9 @@ public class FilmRepositoryTest {
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(100)
                 .build();
-        filmRepository.addFilm(film);
+        filmStorage.addFilm(film);
 
-        filmRepository.clear();
-        assertEquals(new ArrayList<Film>(), filmRepository.getAllFilms());
+        filmStorage.clear();
+        assertEquals(new ArrayList<Film>(), filmStorage.getAllFilms());
     }
 }
