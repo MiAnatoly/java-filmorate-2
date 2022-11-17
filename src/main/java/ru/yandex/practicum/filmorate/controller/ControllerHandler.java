@@ -31,6 +31,6 @@ public class ControllerHandler {
     @ExceptionHandler(InternalServerErrorException.class)
     public ErrorResponse internalServerError(InternalServerErrorException exception) {
         log.warn("500 Internal Server Error", exception);
-        return new ErrorResponse(exception.getMessage(), "400 Bad Request");
+        return new ErrorResponse(exception.getMessage(), "500 Internal Server Error");
     }
 }
