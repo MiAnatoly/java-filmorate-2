@@ -298,7 +298,7 @@ public class InMemoryUserStorageTest {
                 .name("User1")
                 .email("mail123@mail.org")
                 .birthday(LocalDate.of(1956, 8, 20))
-                .friends(new HashSet<>(List.of(2 ,3)))
+                .friends(new HashSet<>(List.of(2, 3)))
                 .build();
         userStorage.addUser(user);
         expectation.add(user);

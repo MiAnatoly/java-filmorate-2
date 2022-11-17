@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.dto.FilmDTO;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.film.FilmService;
 
@@ -22,27 +23,27 @@ public class FilmController {
 
     // добавление фильма
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) {
+    public FilmDTO addFilm(@Valid @RequestBody Film film) {
         log.info("Добавление фильма " + film.getName());
         return filmService.addFilm(film);
     }
 
     // обновление фильма
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film updateFilm) {
+    public FilmDTO updateFilm(@Valid @RequestBody Film updateFilm) {
         log.info("Обновление фильма " + updateFilm.getName());
         return filmService.updateFilm(updateFilm);
     }
 
     // получение списка фильмов
     @GetMapping
-    public List<Film> getFilms() {
+    public List<FilmDTO> getFilms() {
         log.info("Получение списка всех фильмов " + filmService.getAllFilms());
         return filmService.getAllFilms();
     }
 
     @GetMapping("/{filmId}")
-    public Film getById(@Valid @PathVariable int filmId) {
+    public FilmDTO getById(@Valid @PathVariable int filmId) {
         log.info("Запрос фильма по id=" + filmId);
         return filmService.getById(filmId);
     }
@@ -63,7 +64,7 @@ public class FilmController {
 
     // возвращает список из первых count фильмов по количеству лайков
     @GetMapping("/popular")
-    public List<Film> getPopular(@Valid @RequestParam(required = false, defaultValue = "10") int count) {
+    public List<FilmDTO> getPopular(@Valid @RequestParam(required = false, defaultValue = "10") int count) {
         return filmService.getTop(count);
     }
 }

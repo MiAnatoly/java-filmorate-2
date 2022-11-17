@@ -2,10 +2,12 @@ package ru.yandex.practicum.filmorate.service.film;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dto.FilmDTO;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmServiceImplementation implements FilmService {
@@ -17,23 +19,26 @@ public class FilmServiceImplementation implements FilmService {
     }
 
     @Override
-    public Film addFilm(Film film) {
-        return filmStorage.addFilm(film);
+    public FilmDTO addFilm(Film film) {
+        return convertEntityToDto(filmStorage.addFilm(film));
     }
 
     @Override
-    public Film updateFilm(Film filmToUpdate) {
-        return filmStorage.updateFilm(filmToUpdate);
+    public FilmDTO updateFilm(Film filmToUpdate) {
+        return convertEntityToDto(filmStorage.updateFilm(filmToUpdate));
     }
 
     @Override
-    public List<Film> getAllFilms() {
-        return filmStorage.getAllFilms();
+    public List<FilmDTO> getAllFilms() {
+        return filmStorage.getAllFilms()
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Film getById(int filmId) {
-        return filmStorage.getById(filmId);
+    public FilmDTO getById(int filmId) {
+        return convertEntityToDto(filmStorage.getById(filmId));
     }
 
     @Override
@@ -47,12 +52,28 @@ public class FilmServiceImplementation implements FilmService {
     }
 
     @Override
-    public List<Film> getTop(int count) {
-        return filmStorage.getTop(count);
+    public List<FilmDTO> getTop(int count) {
+        return filmStorage.getTop(count)
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void clear() {
         filmStorage.clear();
+    }
+
+    private FilmDTO convertEntityToDto(Film film) {
+        FilmDTO filmDTO;
+        filmDTO = FilmDTO.builder()
+                .id(film.getId())
+                .name(film.getName())
+                .description(film.getDescription())
+                .releaseDate(film.getReleaseDate())
+                .duration(film.getDuration())
+                .like(film.getLike())
+                .build();
+        return filmDTO;
     }
 }
