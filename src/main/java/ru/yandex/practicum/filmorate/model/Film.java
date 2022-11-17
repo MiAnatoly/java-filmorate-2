@@ -8,6 +8,8 @@ import ru.yandex.practicum.filmorate.filmvalidator.ValidateData;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,4 +32,6 @@ public class Film {
 
     @Positive(message = "Продолжительность фильма должна быть положительной.")
     private int duration; // продолжительность фильма
+
+    private Set<Integer> like = new HashSet<>();
 }
