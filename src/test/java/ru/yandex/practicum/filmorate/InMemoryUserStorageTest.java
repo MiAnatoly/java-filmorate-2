@@ -8,9 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -356,6 +354,6 @@ public class InMemoryUserStorageTest {
         userStorage.addUser(user);
 
         userStorage.clear();
-        assertEquals(new ArrayList<User>(), userStorage.getAllUsers());
+        assertEquals(Collections.EMPTY_LIST, userStorage.getAllUsers());
     }
 }
