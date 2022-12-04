@@ -129,7 +129,7 @@ public class DbFilmStorage implements FilmStorage {
     }
 
     @Override
-    public List<Film> popularFilms(Integer count) {
+    public List<Film> popularFilms(int count) {
         String sql =
                 "SELECT F.FILM_ID, F.NAME, F.DESCRIPTION , F.RELEASE_DATE,  " +
                         "F.DURATION, F.MPA_ID, R.MPA_NAME " +

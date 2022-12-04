@@ -15,5 +15,5 @@ public interface FilmStorage {
 
     void deleteFilm(Film film);
 
-    List<Film> popularFilms(Integer count);
+    List<Film> popularFilms(int count);
 }
