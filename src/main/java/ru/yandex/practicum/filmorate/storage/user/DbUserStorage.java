@@ -36,12 +36,12 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public User createUser(User user) {
-        if (getUsers().contains(user)) {
-            log.error("Такой пользователь уже существует.");
-            throw new ValidationException("Такой пользователь уже существует.");
-        } else if (!customValidator.isValid(user)) {
+        if (!customValidator.isValid(user)) {
             log.info("Попытка добавить пользователя с некорректной информацией");
             throw new ValidationException("Некорректно заполнено одно из полей");
+        } else if (getUsers().contains(user)) {
+            log.error("Такой пользователь уже существует.");
+            throw new ValidationException("Такой пользователь уже существует.");
         } else {
             if (user.getName().isBlank()) {
                 log.debug("Имя не указано. В качестве имени используется логин.");
@@ -67,7 +67,7 @@ public class DbUserStorage implements UserStorage {
     public User updateUser(User user) {
         if (!getUsers().contains(user)) {
             log.error("Пользователь с id={} не найден.", user.getId());
-            throw new UserNotFoundException("Пользователь с id="+ user.getId() + " не найден.");
+            throw new UserNotFoundException("Пользователь с id=" + user.getId() + " не найден.");
         } else {
             String sql =
                     "UPDATE USERS " +
