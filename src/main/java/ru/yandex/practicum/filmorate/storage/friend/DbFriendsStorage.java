@@ -21,9 +21,10 @@ public class DbFriendsStorage implements FriendsStorage {
 
     @Override
     public void addFriend(int userId, int friendId) {
-        if (userStorage.getUsers().stream().noneMatch(u -> Objects.equals(u.getId(), userId))) {
+        List<User> users = userStorage.getUsers();
+        if (users.stream().noneMatch(u -> Objects.equals(u.getId(), userId))) {
             throw new UserNotFoundException("Идентификатор пользователя не найден");
-        } else if (userStorage.getUsers().stream().noneMatch(u -> Objects.equals(u.getId(), friendId))) {
+        } else if (users.stream().noneMatch(u -> Objects.equals(u.getId(), friendId))) {
             throw new UserNotFoundException("Идентификатор друга не найден");
         }
         String sql =
