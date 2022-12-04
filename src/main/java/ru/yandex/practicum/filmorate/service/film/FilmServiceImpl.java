@@ -56,7 +56,7 @@ public class FilmServiceImpl implements FilmService {
 
     public FilmDto updateFilm(FilmDto filmDto) {
         Film film = convertFilmDtoToFilm(filmDto);
-        filmGenresStorage.updateGenreFilm(film);
+        filmGenresStorage.deleteGenreFilm(film);
         filmGenresStorage.createGenreByFilm(film);
         return convertFilmToDto(filmStorage.updateFilm(film));
     }

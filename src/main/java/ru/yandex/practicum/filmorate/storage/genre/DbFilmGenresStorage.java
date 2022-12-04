@@ -38,7 +38,7 @@ public class DbFilmGenresStorage implements FilmGenresStorage {
     }
 
     @Override
-    public void updateGenreFilm(Film film) {
+    public void deleteGenreFilm(Film film) {
         String sql = "DELETE FROM FILMS_GENRES WHERE FILM_ID = ?";
         jdbcTemplate.update(sql, film.getId());
     }
