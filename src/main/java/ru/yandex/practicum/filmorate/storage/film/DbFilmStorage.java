@@ -34,7 +34,7 @@ public class DbFilmStorage implements FilmStorage {
                         "FROM FILMS f " +
                         "JOIN MPA_RATINGS AS R ON f.MPA_ID = R.MPA_ID " +
                         "ORDER BY F.FILM_ID";
-        log.info("Все фильмы:");
+        log.info("Все фильмы.");
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
     }
 

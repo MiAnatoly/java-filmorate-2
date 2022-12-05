@@ -42,6 +42,7 @@ public class FilmServiceImpl implements FilmService {
         for (Film film : films) {
             loadData(film);
         }
+
         return films.stream()
                 .map(this::convertFilmToDto)
                 .collect(Collectors.toList());
