@@ -33,10 +33,6 @@ public class FilmServiceImpl implements FilmService {
         this.filmGenresStorage = filmGenresStorage;
     }
 
-    public void loadData(Film film) {
-        film.setGenres(genreStorage.getGenresByFilm(film));
-    }
-
     public List<FilmDto> findAll() {
         List<Film> films = filmStorage.getFilms();
         for (Film film : films) {
@@ -126,5 +122,9 @@ public class FilmServiceImpl implements FilmService {
                 .likes(filmDto.getLikes())
                 .genres(filmDto.getGenres())
                 .build();
+    }
+
+    private void loadData(Film film) {
+        film.setGenres(genreStorage.getGenresByFilm(film));
     }
 }
