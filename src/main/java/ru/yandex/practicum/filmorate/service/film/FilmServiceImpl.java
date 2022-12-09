@@ -1,43 +1,30 @@
 package ru.yandex.practicum.filmorate.service.film;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.genre.FilmGenresStorage;
 import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
 import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
-import ru.yandex.practicum.filmorate.dto.FilmDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class FilmServiceImpl implements FilmService {
     private final FilmStorage filmStorage;
     private final LikeStorage likeStorage;
     private final GenreStorage genreStorage;
     private final FilmGenresStorage filmGenresStorage;
 
-    @Autowired
-    public FilmServiceImpl(FilmStorage filmStorage,
-                           LikeStorage likeStorage,
-                           GenreStorage genreStorage,
-                           FilmGenresStorage filmGenresStorage) {
-        this.filmStorage = filmStorage;
-        this.likeStorage = likeStorage;
-        this.genreStorage = genreStorage;
-        this.filmGenresStorage = filmGenresStorage;
-    }
-
     public List<FilmDto> findAll() {
-        List<Film> films = filmStorage.getFilms();
-        for (Film film : films) {
-            loadData(film);
-        }
+        List<Film> films = filmStorage.getFilmsAndGenres();
 
         return films.stream()
                 .map(this::convertFilmToDto)

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
@@ -29,13 +30,50 @@ public class DbFilmStorage implements FilmStorage {
     @Override
     public List<Film> getFilms() {
         String sql =
-                "SELECT F.FILM_ID, F.NAME,F.DESCRIPTION, F.RELEASE_DATE,  " +
+                "SELECT F.FILM_ID, F.NAME, F.DESCRIPTION, F.RELEASE_DATE,  " +
                         "F.DURATION, F.MPA_ID, R.MPA_NAME " +
                         "FROM FILMS f " +
                         "JOIN MPA_RATINGS AS R ON f.MPA_ID = R.MPA_ID " +
                         "ORDER BY F.FILM_ID";
         log.info("Все фильмы.");
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+    }
+
+    @Override
+    public List<Film> getFilmsAndGenres() {
+        String sql =
+                "SELECT F.FILM_ID, " +
+                        "F.NAME, " +
+                        "F.DESCRIPTION, " +
+                        "F.RELEASE_DATE, " +
+                        "F.DURATION, " +
+                        "F.MPA_ID, " +
+                        "R.MPA_NAME " +
+                        "FROM FILMS f " +
+                        "LEFT OUTER JOIN MPA_RATINGS AS R ON f.MPA_ID = R.MPA_ID " +
+                        "LEFT OUTER JOIN FILMS_GENRES FG on f.FILM_ID = FG.FILM_ID " +
+                        "ORDER BY F.FILM_ID";
+        List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+
+        sql =
+                "SELECT F.FILM_ID, " +
+                        "G.GENRE_ID, " +
+                        "G.NAME " +
+                        "FROM FILMS f " +
+                        "JOIN MPA_RATINGS AS R ON f.MPA_ID = R.MPA_ID " +
+                        "JOIN FILMS_GENRES FG ON f.FILM_ID = FG.FILM_ID " +
+                        "JOIN GENRES G on G.GENRE_ID = FG.GENRE_ID " +
+                        "ORDER BY F.FILM_ID";
+        List<Film> filmsAndGenres = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilmAndGenre(rs));
+
+        films.forEach(film -> filmsAndGenres.forEach(fg -> {
+            if (fg.getId().equals(film.getId())) {
+                film.getGenres().addAll(fg.getGenres());
+            }
+        }));
+
+        log.info("Все фильмы с жанрами.");
+        return films;
     }
 
     @Override
@@ -97,10 +135,9 @@ public class DbFilmStorage implements FilmStorage {
 
         List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), id);
 
-        if (!films.isEmpty())
-        {
+        if (!films.isEmpty()) {
             Film film = new Film();
-            films.forEach(f->{
+            films.forEach(f -> {
                 if (f.getId().equals(id)) {
                     film.setId(f.getId());
                     film.setName(f.getName());
@@ -130,17 +167,6 @@ public class DbFilmStorage implements FilmStorage {
         log.info("Удалён фильм {}", film.getName());
     }
 
-    private Film makeFilm(ResultSet rs) throws SQLException {
-        Film film = new Film();
-        film.setId(rs.getInt("FILM_ID"));
-        film.setName(rs.getString("NAME"));
-        film.setDescription(rs.getString("DESCRIPTION"));
-        film.setReleaseDate(rs.getDate("RELEASE_DATE").toLocalDate());
-        film.setDuration(rs.getInt("DURATION"));
-        film.setMpa(new Mpa(rs.getInt("MPA_ID"), rs.getString("MPA_NAME")));
-        return film;
-    }
-
     @Override
     public List<Film> popularFilms(int count) {
         String sql =
@@ -154,5 +180,23 @@ public class DbFilmStorage implements FilmStorage {
                         "limit ?";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), count);
+    }
+
+    private Film makeFilm(ResultSet rs) throws SQLException {
+        Film film = new Film();
+        film.setId(rs.getInt("FILM_ID"));
+        film.setName(rs.getString("NAME"));
+        film.setDescription(rs.getString("DESCRIPTION"));
+        film.setReleaseDate(rs.getDate("RELEASE_DATE").toLocalDate());
+        film.setDuration(rs.getInt("DURATION"));
+        film.setMpa(new Mpa(rs.getInt("MPA_ID"), rs.getString("MPA_NAME")));
+        return film;
+    }
+
+    private Film makeFilmAndGenre(ResultSet rs) throws SQLException {
+        Film film = new Film();
+        film.setId(rs.getInt(1));
+        film.getGenres().add(new Genre(rs.getInt(2), rs.getString(3)));
+        return film;
     }
 }
