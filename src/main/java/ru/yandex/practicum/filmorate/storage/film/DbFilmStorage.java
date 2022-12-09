@@ -87,21 +87,34 @@ public class DbFilmStorage implements FilmStorage {
         if (id < 1) {
             throw new FilmNotFoundException("Введен некорректный идентификатор фильма.");
         }
-        List<Film> films = getFilms();
-        for (Film film : films) {
-            if (film.getId() == id) {
-                String sql =
-                        "SELECT F.FILM_ID, F.NAME, F.DESCRIPTION, F.RELEASE_DATE," +
-                                "F.DURATION, F.MPA_ID, R.MPA_NAME " +
-                                "FROM FILMS F " +
-                                "JOIN MPA_RATINGS AS R ON F.MPA_ID = R.MPA_ID " +
-                                "WHERE F.FILM_ID = ?";
-                return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), id)
-                        .stream().findAny().orElse(null);
-            }
+
+        String sql =
+                "SELECT F.FILM_ID, F.NAME, F.DESCRIPTION, F.RELEASE_DATE," +
+                        "F.DURATION, F.MPA_ID, R.MPA_NAME " +
+                        "FROM FILMS F " +
+                        "JOIN MPA_RATINGS AS R ON F.MPA_ID = R.MPA_ID " +
+                        "WHERE F.FILM_ID = ?";
+
+        List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), id);
+
+        if (!films.isEmpty())
+        {
+            Film film = new Film();
+            films.forEach(f->{
+                if (f.getId().equals(id)) {
+                    film.setId(f.getId());
+                    film.setName(f.getName());
+                    film.setDescription(f.getDescription());
+                    film.setReleaseDate(f.getReleaseDate());
+                    film.setDuration(f.getDuration());
+                    film.setMpa(f.getMpa());
+                }
+            });
+            return film;
+        } else {
+            log.error("Фильм не найден");
+            throw new FilmNotFoundException("Фильм не найден");
         }
-        log.error("Фильм не найден");
-        throw new FilmNotFoundException("Фильм не найден");
     }
 
     @Override

@@ -85,19 +85,31 @@ public class DbUserStorage implements UserStorage {
         if (id < 1) {
             throw new UserNotFoundException("Введен некорректный идентификатор пользователя.");
         }
-        for (User user : getUsers()) {
-            if (user.getId() == id) {
-                String sql =
-                        "SELECT * " +
-                                "FROM USERS " +
-                                "WHERE USER_ID = ?";
-                return jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs), id)
-                        .stream()
-                        .findAny().orElse(null);
-            }
+
+        String sql =
+                "SELECT * " +
+                        "FROM USERS " +
+                        "WHERE USER_ID = ?";
+
+        List<User> users = jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs), id);
+
+        if (!users.isEmpty()) {
+            User user = new User();
+
+            users.forEach(u -> {
+                if (u.getId().equals(id)) {
+                    user.setId(u.getId());
+                    user.setEmail(u.getEmail());
+                    user.setLogin(u.getLogin());
+                    user.setName(u.getName());
+                    user.setBirthday(u.getBirthday());
+                }
+            });
+            return user;
+        } else {
+            log.error("Пользователь с id={} не найден.", id);
+            throw new UserNotFoundException("Пользователь с id=" + id + " не найден.");
         }
-        log.error("Пользователь с id={} не найден.", id);
-        throw new UserNotFoundException("Пользователь с id=" + id + " не найден.");
     }
 
     @Override
