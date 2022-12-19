@@ -32,6 +32,11 @@ public class UserController {
         return userService.updateUser(userDto);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
+    }
+
     @GetMapping("/{id}")
     public UserDto findBId(@PathVariable int id) {
         return userService.findById(id);

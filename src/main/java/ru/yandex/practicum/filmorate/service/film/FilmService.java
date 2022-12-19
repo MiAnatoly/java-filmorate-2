@@ -11,6 +11,8 @@ public interface FilmService {
 
     FilmDto updateFilm(FilmDto filmDto);
 
+    void deleteFilm(int id);
+
     FilmDto findById(int id);
 
     void removeFilm(FilmDto filmDto);

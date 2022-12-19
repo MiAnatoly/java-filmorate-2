@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.friend.FriendsStorage;
+import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.List;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserStorage userStorage;
     private final FriendsStorage friendsStorage;
+    private final LikeStorage likeStorage;
 
     @Autowired
-    public UserServiceImpl(UserStorage userStorage, FriendsStorage friendsStorage) {
+    public UserServiceImpl(UserStorage userStorage, FriendsStorage friendsStorage, LikeStorage likeStorage) {
         this.userStorage = userStorage;
         this.friendsStorage = friendsStorage;
+        this.likeStorage =likeStorage;
     }
 
     public List<UserDto> findAll() {
@@ -38,6 +41,12 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto) {
         User user = convertUserDtoToUser(userDto);
         return convertUserToUserDto(userStorage.updateUser(user));
+    }
+
+    public void deleteUser(int id) {
+        likeStorage.removeLikesUser(id);
+        friendsStorage.deleteAllFriendsUser(id);
+        userStorage.deleteUser(id);
     }
 
     public UserDto findById(int id) {

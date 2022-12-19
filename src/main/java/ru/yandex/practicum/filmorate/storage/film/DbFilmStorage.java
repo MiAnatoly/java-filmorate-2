@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -51,7 +52,6 @@ public class DbFilmStorage implements FilmStorage {
                         "R.MPA_NAME " +
                         "FROM FILMS f " +
                         "LEFT OUTER JOIN MPA_RATINGS AS R ON f.MPA_ID = R.MPA_ID " +
-                        "LEFT OUTER JOIN FILMS_GENRES FG on f.FILM_ID = FG.FILM_ID " +
                         "ORDER BY F.FILM_ID";
         List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
 
@@ -121,6 +121,19 @@ public class DbFilmStorage implements FilmStorage {
     }
 
     @Override
+    public void deleteFilm(int id) {
+        String sql =
+                "DELETE " +
+                        "FROM FILMS " +
+                        "WHERE FILM_ID = ?";
+        int result = jdbcTemplate.update(sql, id);
+        if(result == 1)
+            log.info("Удалён фильм id {}", id);
+        else
+            throw new UserNotFoundException("Фильм не найден для удаления.");
+    }
+
+    @Override
     public Film findById(int id) {
         if (id < 1) {
             throw new FilmNotFoundException("Введен некорректный идентификатор фильма.");
@@ -179,7 +192,25 @@ public class DbFilmStorage implements FilmStorage {
                         "ORDER BY COUNT(L.USER_ID) DESC " +
                         "limit ?";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), count);
+        List<Film> films =  jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), count);
+        sql =
+                "SELECT F.FILM_ID, " +
+                        "G.GENRE_ID, " +
+                        "G.NAME " +
+                        "FROM FILMS f " +
+                        "JOIN MPA_RATINGS AS R ON f.MPA_ID = R.MPA_ID " +
+                        "JOIN FILMS_GENRES FG ON f.FILM_ID = FG.FILM_ID " +
+                        "JOIN GENRES G on G.GENRE_ID = FG.GENRE_ID " +
+                        "ORDER BY F.FILM_ID";
+        List<Film> filmsAndGenres = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilmAndGenre(rs));
+
+        films.forEach(film -> filmsAndGenres.forEach(fg -> {
+            if (fg.getId().equals(film.getId())) {
+                film.getGenres().addAll(fg.getGenres());
+            }
+        }));
+
+        return films;
     }
 
     private Film makeFilm(ResultSet rs) throws SQLException {

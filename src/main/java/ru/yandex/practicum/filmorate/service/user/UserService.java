@@ -11,6 +11,8 @@ public interface UserService {
 
     UserDto updateUser(UserDto userDto);
 
+    void deleteUser(int id);
+
     UserDto findById(int id);
 
     void removeUser(UserDto user);

@@ -42,4 +42,21 @@ public class DbLikeStorage implements LikeStorage {
                         "AND USER_ID = ?";
         jdbcTemplate.update(sql, id, userId);
     }
+
+    @Override
+    public void removeLikesFilm(int id) {
+        String sql =
+                "DELETE " +
+                        "FROM FILMS_LIKES " +
+                        "WHERE FILM_ID = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public void removeLikesUser(int id) {
+        String sql =
+                "DELETE " +
+                        "FROM FILMS_LIKES " +
+                        "WHERE USER_ID = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }

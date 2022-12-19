@@ -40,9 +40,15 @@ public class FilmServiceImpl implements FilmService {
 
     public FilmDto updateFilm(FilmDto filmDto) {
         Film film = convertFilmDtoToFilm(filmDto);
-        filmGenresStorage.deleteGenreFilm(film);
+        filmGenresStorage.deleteGenreFilm(film.getId());
         filmGenresStorage.createGenreByFilm(film);
         return convertFilmToDto(filmStorage.updateFilm(film));
+    }
+
+    public void deleteFilm(int id) {
+        likeStorage.removeLikesFilm(id);
+        filmGenresStorage.deleteGenreFilm(id);
+        filmStorage.deleteFilm(id);
     }
 
     public FilmDto findById(int id) {

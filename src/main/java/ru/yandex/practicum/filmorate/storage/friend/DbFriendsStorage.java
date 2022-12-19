@@ -41,9 +41,12 @@ public class DbFriendsStorage implements FriendsStorage {
                         "WHERE USER_ID = ?";
         List<Integer> friendsUser = jdbcTemplate.queryForList(sql, Integer.class, id);
         log.info("Все друзья пользователя с id {}:", id);
+        if (friendsUser.isEmpty())
+            userStorage.findById(id);
         return friendsUser.stream()
                 .map(userStorage::findById)
                 .collect(Collectors.toList());
+
     }
 
     @Override
@@ -59,5 +62,15 @@ public class DbFriendsStorage implements FriendsStorage {
                         "WHERE USER_ID = ? " +
                         "AND FRIEND_ID = ?";
         jdbcTemplate.update(sql, userId, friendId);
+    }
+
+    @Override
+    public void deleteAllFriendsUser(int id) {
+        String sql =
+                "DELETE " +
+                        "FROM FRIENDS " +
+                        "WHERE USER_ID = ?" +
+                        "OR FRIEND_ID = ?";
+        jdbcTemplate.update(sql, id, id);
     }
 }

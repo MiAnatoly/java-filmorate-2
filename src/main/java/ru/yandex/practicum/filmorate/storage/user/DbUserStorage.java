@@ -81,6 +81,19 @@ public class DbUserStorage implements UserStorage {
     }
 
     @Override
+    public void deleteUser(int id) {
+        String sql =
+                "DELETE FROM USERS " +
+                        "WHERE USER_ID = ?";
+
+        int result = jdbcTemplate.update(sql, id);
+        if(result == 1)
+            log.info("Удалён пользователь id {}", id);
+        else
+            throw new UserNotFoundException("Пользователь не найден для удаления.");
+    }
+
+    @Override
     public User findById(int id) {
         if (id < 1) {
             throw new UserNotFoundException("Введен некорректный идентификатор пользователя.");
