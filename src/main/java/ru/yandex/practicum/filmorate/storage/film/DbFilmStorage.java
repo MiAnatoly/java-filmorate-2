@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -130,7 +129,7 @@ public class DbFilmStorage implements FilmStorage {
         if(result == 1)
             log.info("Удалён фильм id {}", id);
         else
-            throw new UserNotFoundException("Фильм не найден для удаления.");
+            throw new FilmNotFoundException("Фильм не найден для удаления.");
     }
 
     @Override
